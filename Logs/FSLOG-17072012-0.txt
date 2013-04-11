@@ -1,0 +1,6 @@
+encima.cs.cf.ac.uk
+Running Connection Handler...
+---Stopping Network Manager, if running...
+---Board Name is: encima.cs.cf.ac.uk
+---Getting name of Wireless interface
+---No Wireless Interfaces, labelled wlan, available. Connection can't be managed

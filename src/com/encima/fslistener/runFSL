@@ -1,0 +1,3 @@
+cd /home/linaro/projects/FileSystemListener/src/com/encima/fslistener
+sudo javac -d classes -cp classes *.java
+sudo java -cp classes com.encima.fslistener.FSLRunner

@@ -1,0 +1,65 @@
+package com.encima.fslistener;
+/**
+ * @author christophergwilliams
+ */
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+
+public class ImageSender extends Thread {
+	
+	Socket s;
+	String ip;
+	int port;
+	OutputStream os;
+	File file;
+	
+	public ImageSender(Socket rSock, String rIp, int rPort, File rfile) {
+		s = rSock;
+		ip = rIp;
+		port = rPort;
+		file = rfile;
+	}
+	
+	public void run() {
+		int attempt = 0;
+		//do {
+			sendImage();
+			//attempt++;
+		//} while(!sendImage() && attempt < 4);
+	}
+	
+	public boolean sendImage() {
+		boolean sent = false;
+		try {
+			s = new Socket(ip, port);
+			System.out.println("Client connected to Server via " + ip + " on port " + port);
+		} catch (Exception e) {
+			System.out.println("Client: Cannot find Host: " + ip);
+			//add error handling to return to FileSystemListener
+			return false;
+		}
+		try{
+			os = new BufferedOutputStream(s.getOutputStream());
+			FileInputStream fis = new FileInputStream(file);
+			byte[] bytearray = new byte[(int) file.length()];
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			bis.read(bytearray);
+			System.out.println("Sending File: " + file.getName());
+			os.write(bytearray);
+			os.flush();
+			System.out.println(file.getName() + " Sent Successfully.");
+			sent = true;
+			file.delete();
+			os.close();
+		} catch(Exception e) {
+			System.out.println("Error in Sending File: " + file.getName());
+			e.printStackTrace();
+			sent = false;
+		}
+		return sent;
+	}
+}
